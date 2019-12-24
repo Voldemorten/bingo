@@ -1,0 +1,11 @@
+.custom-table.table {
+    width: 50%;
+    margin-bottom: 1rem;
+    color: #212529;
+    margin: auto;
+}
+
+.custom-table.table td {
+    border: 1px solid #dee2e6;
+}
+
