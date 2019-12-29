@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table'
 
 
 type BingoCardState = {
-    drawnNumbers: any[],
+    pickedNumbers: any[],
     cardNumbers: number[][],
     serialNo: number
 };
@@ -38,7 +38,7 @@ class BingoCard extends Component<{}, BingoCardState> {
         let serialNo = 42
         // let serialNo = Math.ceil(Math.random()*9999)
         return {
-            drawnNumbers: [],
+            pickedNumbers: [],
             serialNo: serialNo,
             cardNumbers: this.addNullNumbers(this.generateCardNumbers(serialNo)),
         }
@@ -157,25 +157,35 @@ class BingoCard extends Component<{}, BingoCardState> {
 
     clickNumber = (numberFromChild: any) => {
         let objectFound = false;
-        this.state.drawnNumbers.forEach((number) => {
+        this.state.pickedNumbers.forEach((number) => {
             if(number.number === numberFromChild.number) objectFound = true;
         })
         //number not found => add
         if(!objectFound) {
             this.setState((prev) => {
-                prev.drawnNumbers.push(numberFromChild);
+                prev.pickedNumbers.push(numberFromChild);
                 return {
-                    drawnNumbers: prev.drawnNumbers
+                    pickedNumbers: prev.pickedNumbers
                 }
             })
         } else {
             this.setState((prev) => {
-                let newNumbers = prev.drawnNumbers.filter(number => number.number !== numberFromChild.number)
+                let newNumbers = prev.pickedNumbers.filter(number => number.number !== numberFromChild.number)
                 return {
-                    drawnNumbers: newNumbers
+                    pickedNumbers: newNumbers
                 }
             })
         }
+    }
+
+    checkNumbers = (numbers:number[]) => {
+        let correctNumbers = this.state.pickedNumbers.filter((number) => {
+            return numbers.forEach((no) => {
+                if(no === number.number) return true;
+                return false;
+            })
+        })
+        console.log(correctNumbers);
     }
 
     render = () => {
@@ -195,6 +205,9 @@ class BingoCard extends Component<{}, BingoCardState> {
                         })}
                     </tbody>
                 </Table>
+                <div className="serialNo">
+                    Serial no: {this.state.serialNo}
+                </div>
             </div>
         )
     }

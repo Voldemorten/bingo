@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import './BingoBoard.css';
-import Button from './Button/Button';
+import MyButton from '../MyButton/MyButton';
 import BingoBoardNumber from './BingoBoardNumber/BingoBoardNumber'
 import Table from 'react-bootstrap/Table';
 
@@ -16,14 +16,17 @@ class bNo {
     }
 }
 
-
 type BingoBoardState = {
     drawnNumbers: number[],
     boardNumbers: bNo[][]
     lastDrawnNumber: number
 };
 
-class BingoBoard extends Component<{}, BingoBoardState> {
+type BingoBoardProps = {
+    getDrawnNumbers: (numbers:number[], prevState:any) => void
+}
+
+class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
     rows: number
     columns: number
     amountOfNumbers: number
@@ -37,6 +40,11 @@ class BingoBoard extends Component<{}, BingoBoardState> {
         this.amountOfNumbers = this.rows * this.columns
 
         this.state = this.emptyState()
+    }
+
+    //to pass drawn numbers to parent
+    componentDidUpdate = (prevProps:any, prevState:any) => {
+        this.props.getDrawnNumbers(this.state.drawnNumbers, prevState)
     }
 
     generateBoardNumbers = (rows: number, columns: number) => {
@@ -104,14 +112,14 @@ class BingoBoard extends Component<{}, BingoBoardState> {
                     </tbody>
                 </Table>
                 <div className="buttons">
-                    <Button
+                    <MyButton
                         handleClick ={this.drawNumber}
                         buttonText = "Draw number"
-                    ></Button>
-                    <Button
+                    ></MyButton>
+                    <MyButton
                         handleClick = {this.resetState}
                         buttonText = "Reset"
-                    ></Button>
+                    ></MyButton>
                 </div>
                
                 <div className={this.state.lastDrawnNumber === 0 ? 'invisible' : ''}>
