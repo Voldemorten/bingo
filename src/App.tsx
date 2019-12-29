@@ -12,7 +12,7 @@ class App extends Component<any, AppState> {
     constructor(props:any) {
         super(props)
         this.state = {
-            view: 1, //TODO: change to 0
+            view: 0,
             drawnNumbers: []
         }
     }

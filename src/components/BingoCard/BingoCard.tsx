@@ -39,15 +39,8 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
         } else {
             this.state = this.serialState()
         }
-
-      
-
-        this.printBingoCard(this.state.cardNumbers);
+        // this.printBingoCard(this.state.cardNumbers);
     }
-
-    // componentWillMount = () => {
-    //     this.markAllDrawnNumbers()
-    // }
 
     markAllDrawnNumbers = (cardNumbers:number[][]) => {
         let pickedNumbers:number[] = []
@@ -68,7 +61,7 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
         this.setState((prev, props) => this.serialState())
     }
 
-    //TODO: refactor this shit. It's fucking horrible. But it works. 
+    // TODO: refactor this shit. It's fucking horrible. But it works. 
     serialState = (serialNo?:number) => {
         let initPickNumbers = true;
 
@@ -233,7 +226,6 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
                                     {row.map((number, ci) => {
                                         //number might be undefined
                                         if(number) {
-                                            console.log(this.numberIsPicked(number))
                                             return (
                                                 <BingoCardNumber 
                                                     key={ri*9+ci}
