@@ -11,8 +11,15 @@ type BingoCardState = {
     serialNo: number
 };
 
+//this is for checing the card as admin. 
+type BingoCardProps = {
+    existingSeed: boolean
+    existingSeedValue?: number
+    drawnNumbers?: number[]
+}
 
-class BingoCard extends Component<{}, BingoCardState> {
+
+class BingoCard extends Component<BingoCardProps, BingoCardState> {
     rows: number
     columns: number
     numbersPerRow: number
@@ -25,18 +32,20 @@ class BingoCard extends Component<{}, BingoCardState> {
         this.columns = 9
         this.numbersPerRow = 5
 
-        this.state = this.emptyState()
-
+        if(this.props.existingSeed) {
+            this.state = this.serialState(this.props.existingSeedValue)
+        } else {
+            this.state = this.serialState()
+        }
         this.printBingoCard(this.state.cardNumbers);
     }
 
     resetState = () => {
-        this.setState((prev, props) => this.emptyState())
+        this.setState((prev, props) => this.serialState())
     }
 
-    emptyState = () => {
-        let serialNo = 42
-        // let serialNo = Math.ceil(Math.random()*9999)
+    serialState = (serialNo?:number) => {
+        if(!serialNo) serialNo = Math.ceil(Math.random()*9999)
         return {
             pickedNumbers: [],
             serialNo: serialNo,

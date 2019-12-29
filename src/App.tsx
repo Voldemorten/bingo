@@ -64,7 +64,7 @@ class App extends Component<any, AppState> {
                 case 2: {
                     return (
                         <div className="App">
-                            <BingoCard/>
+                            <BingoCard existingSeed={false}/>
                             <MyButton handleClick={() => this.setState((prev, props) => {
                                 return {
                                     view: 0

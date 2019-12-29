@@ -43,8 +43,16 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
     }
 
     //to pass drawn numbers to parent
+    // TODO: Fixs bug when resetting. Needs to be double clicked before clearing. 
     componentDidUpdate = (prevProps:any, prevState:any) => {
         this.props.getDrawnNumbers(this.state.drawnNumbers, prevState)
+    }
+
+    componentDidMount = () => {
+         //demo purposes
+        //  for(let i = 0; i<100; i++) {
+        //     this.drawNumber()
+        // }
     }
 
     generateBoardNumbers = (rows: number, columns: number) => {
