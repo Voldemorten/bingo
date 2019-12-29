@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import './BingoCard.css';
 import seedrandom from 'seedrandom';
+import BingoCardNumber from './BingoCardNumber/BingoCardNumber';
+import Table from 'react-bootstrap/Table'
 
-class bNo {
-    number: number
-    picked: boolean
-
-    constructor(number: number) {
-        this.number = number
-        this.picked = false;
-    }
-}
 
 type BingoCardState = {
-    drawnNumbers: number[],
-    boardNumbers: bNo[][],
+    drawnNumbers: any[],
+    cardNumbers: number[][],
     serialNo: number
 };
 
@@ -33,6 +26,8 @@ class BingoCard extends Component<{}, BingoCardState> {
         this.numbersPerRow = 5
 
         this.state = this.emptyState()
+
+        this.printBingoCard(this.state.cardNumbers);
     }
 
     resetState = () => {
@@ -40,10 +35,12 @@ class BingoCard extends Component<{}, BingoCardState> {
     }
 
     emptyState = () => {
+        let serialNo = 42
+        // let serialNo = Math.ceil(Math.random()*9999)
         return {
-            boardNumbers: [],
             drawnNumbers: [],
-            serialNo: Math.ceil(Math.random()*10_000_000)
+            serialNo: serialNo,
+            cardNumbers: this.addNullNumbers(this.generateCardNumbers(serialNo)),
         }
     }
 
@@ -109,6 +106,7 @@ class BingoCard extends Component<{}, BingoCardState> {
                         }
                     }
                 })
+            idxs.sort();    
             idxs.forEach((idx, i) => {
                 rows[idx][cIndex] = column[i]
             })
@@ -131,11 +129,73 @@ class BingoCard extends Component<{}, BingoCardState> {
                 rows[r][cIndex] = column[0]
             }
         })
+
+        return rows;
+    }
+
+    addNullNumbers = (rows:number[][]) => {
+        //note: not using map because it doesn't map over undefined. 
+        let newRows:any[][] = [[],[],[]]
+        for(let r = 0; r<rows.length; r++) {
+            //hack to make sure all arrays are of length 9 even though element are only assigned to first x columns. 
+            rows[r].length = 9;
+            for(let c = 0; c<rows[r].length; c++) {
+                if(!rows[r][c]) newRows[r][c] = null
+                else newRows[r][c] = rows[r][c]
+            }
+        }
+        return newRows
+    }
+
+    printBingoCard = (rows:number[][]) => {
+        let nos = rows.map(row => row.map(no => {
+            if (no) return no
+            return null
+        }))
+        console.table(nos);
+    }
+
+    clickNumber = (numberFromChild: any) => {
+        let objectFound = false;
+        this.state.drawnNumbers.forEach((number) => {
+            if(number.number === numberFromChild.number) objectFound = true;
+        })
+        //number not found => add
+        if(!objectFound) {
+            this.setState((prev) => {
+                prev.drawnNumbers.push(numberFromChild);
+                return {
+                    drawnNumbers: prev.drawnNumbers
+                }
+            })
+        } else {
+            this.setState((prev) => {
+                let newNumbers = prev.drawnNumbers.filter(number => number.number !== numberFromChild.number)
+                return {
+                    drawnNumbers: newNumbers
+                }
+            })
+        }
     }
 
     render = () => {
         return (
-            <p>{this.state.serialNo}</p>
+            <div className="bingoCard">
+                <Table className="custom-table">
+                    <tbody>
+                        {this.state.cardNumbers.map((row, ri) => {
+                            return (
+                                <tr key={ri}>                                    
+                                    {row.map((number, ci) => {
+                                        if(number) return <BingoCardNumber key={ri*9+ci} number={number} numberClicked={this.clickNumber} row={ri}/>
+                                        return <td key={ri*9+ci}></td>;
+                                    })}
+                                </tr>
+                            ) 
+                        })}
+                    </tbody>
+                </Table>
+            </div>
         )
     }
 }
