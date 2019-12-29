@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table'
 
 
 type BingoCardState = {
-    pickedNumbers: any[],
+    pickedNumbers: number[],
     cardNumbers: number[][],
     serialNo: number
 };
@@ -16,6 +16,7 @@ type BingoCardProps = {
     existingSeed: boolean
     existingSeedValue?: number
     drawnNumbers?: number[]
+    clickable: boolean
 }
 
 
@@ -32,25 +33,66 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
         this.columns = 9
         this.numbersPerRow = 5
 
+        //set state based on existing seed. If a seed has been sent, use that seed to generate the numbers. 
         if(this.props.existingSeed) {
             this.state = this.serialState(this.props.existingSeedValue)
         } else {
             this.state = this.serialState()
         }
+
+      
+
         this.printBingoCard(this.state.cardNumbers);
+    }
+
+    // componentWillMount = () => {
+    //     this.markAllDrawnNumbers()
+    // }
+
+    markAllDrawnNumbers = (cardNumbers:number[][]) => {
+        let pickedNumbers:number[] = []
+        cardNumbers.forEach((row) => {
+            row.forEach((number) => {
+                if(this.props.drawnNumbers?.indexOf(number) !== -1) pickedNumbers.push(number)
+            })
+        })
+        return pickedNumbers
+        // this.setState((prev, props) => {
+        //     return {
+        //         pickedNumbers:pickedNumbers
+        //     }
+        // })
     }
 
     resetState = () => {
         this.setState((prev, props) => this.serialState())
     }
 
+    //TODO: refactor this shit. It's fucking horrible. But it works. 
     serialState = (serialNo?:number) => {
-        if(!serialNo) serialNo = Math.ceil(Math.random()*9999)
-        return {
-            pickedNumbers: [],
-            serialNo: serialNo,
-            cardNumbers: this.addNullNumbers(this.generateCardNumbers(serialNo)),
+        let initPickNumbers = true;
+
+        let pickedNumbers:number[] = []
+        
+        if(!serialNo) {
+            serialNo = Math.ceil(Math.random()*9999)
+            initPickNumbers = false;
         }
+        let cardNumbers = this.addNullNumbers(this.generateCardNumbers(serialNo))
+        
+        if(initPickNumbers) {
+            pickedNumbers = this.markAllDrawnNumbers(cardNumbers)
+        }
+
+        return {
+            pickedNumbers: pickedNumbers,
+            serialNo: serialNo,
+            cardNumbers: cardNumbers,
+        }
+    }
+
+    numberIsPicked = (number:number) => {
+        return this.state.pickedNumbers.indexOf(number) !== -1;
     }
 
     generateCardNumbers = (seed:number) => {
@@ -99,19 +141,12 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
         //TWOS
         twoC.forEach((column, cIndex) => {
             var idxs:number[] = [];
-                column.forEach((no, idx) => {
-                    let b = 0;
+                column.forEach(() => {
                     while(idxs.length < column.length) {
                         let r = Math.floor(rng()*3);
                         if(rowCounts[r] < 5 && idxs.indexOf(r) === -1) {
                             idxs.push(r)
                             rowCounts[r]++
-                        }
-                        if(b++ === 100) {
-                            console.log(numbers)
-                            console.log(columns)
-                            console.log("BROKEN");
-                            break;
                         }
                     }
                 })
@@ -164,10 +199,10 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
         console.table(nos);
     }
 
-    clickNumber = (numberFromChild: any) => {
+    clickNumber = (numberFromChild: number) => {
         let objectFound = false;
         this.state.pickedNumbers.forEach((number) => {
-            if(number.number === numberFromChild.number) objectFound = true;
+            if(number === numberFromChild) objectFound = true;
         })
         //number not found => add
         if(!objectFound) {
@@ -177,24 +212,14 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
                     pickedNumbers: prev.pickedNumbers
                 }
             })
-        } else {
+        } else { //remove
             this.setState((prev) => {
-                let newNumbers = prev.pickedNumbers.filter(number => number.number !== numberFromChild.number)
+                let newNumbers = prev.pickedNumbers.filter(number => number !== numberFromChild)
                 return {
                     pickedNumbers: newNumbers
                 }
             })
         }
-    }
-
-    checkNumbers = (numbers:number[]) => {
-        let correctNumbers = this.state.pickedNumbers.filter((number) => {
-            return numbers.forEach((no) => {
-                if(no === number.number) return true;
-                return false;
-            })
-        })
-        console.log(correctNumbers);
     }
 
     render = () => {
@@ -206,7 +231,19 @@ class BingoCard extends Component<BingoCardProps, BingoCardState> {
                             return (
                                 <tr key={ri}>                                    
                                     {row.map((number, ci) => {
-                                        if(number) return <BingoCardNumber key={ri*9+ci} number={number} numberClicked={this.clickNumber} row={ri}/>
+                                        //number might be undefined
+                                        if(number) {
+                                            console.log(this.numberIsPicked(number))
+                                            return (
+                                                <BingoCardNumber 
+                                                    key={ri*9+ci}
+                                                    number={number}
+                                                    numberClicked={this.clickNumber}
+                                                    initialPickedValue={this.numberIsPicked(number)}
+                                                    clickable={this.props.clickable}
+                                                />
+                                            )
+                                        }
                                         return <td key={ri*9+ci}></td>;
                                     })}
                                 </tr>

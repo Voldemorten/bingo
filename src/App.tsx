@@ -12,7 +12,7 @@ class App extends Component<any, AppState> {
     constructor(props:any) {
         super(props)
         this.state = {
-            view: 0,
+            view: 1, //TODO: change to 0
             drawnNumbers: []
         }
     }
@@ -64,7 +64,7 @@ class App extends Component<any, AppState> {
                 case 2: {
                     return (
                         <div className="App">
-                            <BingoCard existingSeed={false}/>
+                            <BingoCard existingSeed={false} clickable={true}/>
                             <MyButton handleClick={() => this.setState((prev, props) => {
                                 return {
                                     view: 0

@@ -49,10 +49,10 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
     }
 
     componentDidMount = () => {
-         //demo purposes
-        //  for(let i = 0; i<100; i++) {
-        //     this.drawNumber()
-        // }
+        //demo purposes TODO: REMOVE
+         for(let i = 0; i<100; i++) {
+            this.drawNumber()
+        }
     }
 
     generateBoardNumbers = (rows: number, columns: number) => {

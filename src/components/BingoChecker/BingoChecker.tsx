@@ -41,6 +41,7 @@ class BingoChecker extends Component<BingoCheckerProps, BingoCheckerState> {
                     <FormControl
                     placeholder="Serial number"
                     aria-label="Serial number"
+                    defaultValue={"42"} //TODO: Remove! 
                     ref={this.serialNumberRef}
                     />
                     <InputGroup.Append>
@@ -56,7 +57,7 @@ class BingoChecker extends Component<BingoCheckerProps, BingoCheckerState> {
                     <Modal.Body>
                         {/* Immediately invoked function for conditional rendering */}
                         {(() => {
-                            if(this.state.serialNo !== 0) return <BingoCard existingSeed={true} existingSeedValue={this.state.serialNo}/>
+                            if(this.state.serialNo !== 0) return <BingoCard existingSeed={true} existingSeedValue={this.state.serialNo} drawnNumbers={this.props.drawnNumbers} clickable={false}/>
                         })()}
                     </Modal.Body>
                     <Modal.Footer>
