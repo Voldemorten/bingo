@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import './BingoNumber.css';
+import './BingoBoardNumber.css';
 
 //type BingoNumberState = { picked: boolean}
-type BingoNumberProps = { number: number, picked: boolean }
+type BingoBoardNumberProps = { number: number, picked: boolean }
 
-class BingoNumber extends Component<BingoNumberProps, any> {
+class BingoBoardNumber extends Component<BingoBoardNumberProps, any> {
     render = () => {
         return <td className={'number ' + (this.props.picked ? 'picked' : '')}>{this.props.number}</td>
     }
 }
 
-export default BingoNumber;
+export default BingoBoardNumber;

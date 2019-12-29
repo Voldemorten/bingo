@@ -1,6 +1,6 @@
 
 import React from 'react';
-import './DrawNumberButton.css';
+import './Button.css';
 
 
 type buttonProps = {
@@ -9,8 +9,8 @@ type buttonProps = {
   }
   
 
-const DrawNumberButton: React.FC<buttonProps> = ({handleClick, buttonText}) => {
+const Button: React.FC<buttonProps> = ({handleClick, buttonText}) => {
     return <button onClick={handleClick} type="button" className="btn btn-primary">{buttonText}</button>
 }
 
-export default DrawNumberButton;
+export default Button;

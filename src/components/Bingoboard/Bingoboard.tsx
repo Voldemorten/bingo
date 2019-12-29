@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import './Bingoboard.css';
-import DrawNumberButton from './DrawNumberButton/DrawNumberButton';
-import BingoNumber from './BingoNumber/BingoNumber'
+import './BingoBoard.css';
+import Button from './Button/Button';
+import BingoBoardNumber from './BingoBoardNumber/BingoBoardNumber'
 import Table from 'react-bootstrap/Table';
 
 
@@ -17,13 +17,13 @@ class bNo {
 }
 
 
-type BingoboardState = {
+type BingoBoardState = {
     drawnNumbers: number[],
     boardNumbers: bNo[][]
     lastDrawnNumber: number
 };
 
-class Bingoboard extends Component<{}, BingoboardState> {
+class BingoBoard extends Component<{}, BingoBoardState> {
     rows: number
     columns: number
     amountOfNumbers: number
@@ -95,7 +95,7 @@ class Bingoboard extends Component<{}, BingoboardState> {
                             return (
                                 <tr key= {ri}>
                                     {row.map((number, ci) => {
-                                        return <BingoNumber key={number.number} number={number.number} picked={number.picked}/>
+                                        return <BingoBoardNumber key={number.number} number={number.number} picked={number.picked}/>
                                     })}
                                 </tr>
                             )
@@ -104,14 +104,14 @@ class Bingoboard extends Component<{}, BingoboardState> {
                     </tbody>
                 </Table>
                 <div className="buttons">
-                    <DrawNumberButton
+                    <Button
                         handleClick ={this.drawNumber}
                         buttonText = "Draw number"
-                    ></DrawNumberButton>
-                    <DrawNumberButton
+                    ></Button>
+                    <Button
                         handleClick = {this.resetState}
                         buttonText = "Reset"
-                    ></DrawNumberButton>
+                    ></Button>
                 </div>
                
                 <div className={this.state.lastDrawnNumber === 0 ? 'invisible' : ''}>
@@ -124,4 +124,4 @@ class Bingoboard extends Component<{}, BingoboardState> {
     }
 }
 
-export default Bingoboard;
+export default BingoBoard;
