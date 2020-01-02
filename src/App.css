@@ -1,9 +1,24 @@
+@font-face {
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/Raleway/Raleway-Regular.ttf");
+  }
+
 .App {
-  margin: 20px;
-  text-align: center;
+    margin: 20px;
+    text-align: center;
 }
 
 .App-header {
-  font-size: 20px;
-  font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.introDiv {
+    padding: 20px;
+}
+
+.introDiv p {
+    text-align: justify;
 }
