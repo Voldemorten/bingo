@@ -1,10 +1,3 @@
-@font-face {
-    font-family: "Raleway";
-    font-style: normal;
-    font-weight: 400;
-    src: url("/fonts/Raleway/Raleway-Regular.ttf");
-  }
-
 .App {
     margin: 20px;
     text-align: center;
