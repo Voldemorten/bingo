@@ -76,6 +76,8 @@ class App extends Component<any, AppState> {
                     return (
                         <div className="App">
                             <BingoCard existingSeed={false} clickable={true}/>
+                            <BingoCard existingSeed={false} clickable={true}/>
+                            <BingoCard existingSeed={false} clickable={true}/>
                             <MyButton handleClick={() => this.setState((prev, props) => {
                                 return {
                                     view: 0
