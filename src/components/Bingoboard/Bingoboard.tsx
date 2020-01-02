@@ -48,13 +48,6 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
         this.props.getDrawnNumbers(this.state.drawnNumbers, prevState)
     }
 
-    componentDidMount = () => {
-        //demo purposes TODO: REMOVE
-         for(let i = 0; i<100; i++) {
-            this.drawNumber()
-        }
-    }
-
     generateBoardNumbers = (rows: number, columns: number) => {
         var numbers = []
         for (let r = 0; r<rows; r++) {

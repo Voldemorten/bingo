@@ -41,7 +41,6 @@ class BingoChecker extends Component<BingoCheckerProps, BingoCheckerState> {
                     <FormControl
                     placeholder="Serial number"
                     aria-label="Serial number"
-                    defaultValue={"42"} //TODO: Remove! 
                     ref={this.serialNumberRef}
                     />
                     <InputGroup.Append>

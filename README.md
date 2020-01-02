@@ -1,44 +1,9 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## BINGO
 
-## Available Scripts
+This is a small project built with react, typescript and bootstrap. 
 
-In the project directory, you can run:
+When opening the project, you have two choices, bingo board and bingo card.
 
-### `npm start`
+When you view the bingo board, this view is supposed to be put on a large screen for everyone to see. This is the facilitator's (bingo master's) screen. Here the bingo master has the opportunity to draw a random number between 1 and 90, simulating a "normal" bingo game. Furthermore the bingo master's screen has the opportunity to check a bingo plate given a serial number.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Everyone besides the bingo master (the players) choose the bingo card option. This generates a random bingo card with 3 rows each containing 5 numbers and a random serial number. This random serial number is used as the seed value to generate the bingo card, and thus when a player yells bingo, they can give the bingo master the serial number for the card, and the card can be checked. 
