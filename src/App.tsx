@@ -5,6 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BingoCard from './components/BingoCard/BingoCard';
 import BingoChecker from './components/BingoChecker/BingoChecker';
 import MyButton from './components/MyButton/MyButton';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-162373192-1');
+ReactGA.pageview('/bingo');
 
 type AppState = {view:number, drawnNumbers:number[]}
 
