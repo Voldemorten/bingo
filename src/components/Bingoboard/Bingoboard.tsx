@@ -4,6 +4,8 @@ import './BingoBoard.css';
 import MyButton from '../MyButton/MyButton';
 import BingoBoardNumber from './BingoBoardNumber/BingoBoardNumber'
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 class bNo {
@@ -18,8 +20,9 @@ class bNo {
 
 type BingoBoardState = {
     drawnNumbers: number[],
-    boardNumbers: bNo[][]
-    lastDrawnNumber: number
+    boardNumbers: bNo[][],
+    lastDrawnNumber: number,
+    showResetModal: boolean
 };
 
 type BingoBoardProps = {
@@ -34,7 +37,7 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
 
     constructor(props: any) {
         super(props);
-      
+
         this.rows = 10
         this.columns = 9
         this.amountOfNumbers = this.rows * this.columns
@@ -43,7 +46,7 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
     }
 
     //to pass drawn numbers to parent
-    // TODO: Fixs bug when resetting. Needs to be double clicked before clearing. 
+    // TODO: Fixs bug when resetting. Needs to be double clicked before clearing.
     componentDidUpdate = (prevProps:any, prevState:any) => {
         this.props.getDrawnNumbers(this.state.drawnNumbers, prevState)
     }
@@ -63,7 +66,7 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
         do {
             var r = Math.floor(Math.random()*this.rows);
             var c = Math.floor(Math.random()*this.columns);
-        } 
+        }
         while (this.state.boardNumbers[r][c].picked && this.state.drawnNumbers.length !== this.amountOfNumbers)
 
         if(this.state.drawnNumbers.length === this.amountOfNumbers) {
@@ -82,6 +85,9 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
         }
     }
 
+    handleCloseResetModal = () => this.setState({showResetModal: false});
+    handleOpenResetModal = () => this.setState({showResetModal: true});
+
     resetState = () => {
         this.setState((prev, props) => this.emptyState())
     }
@@ -90,11 +96,12 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
         return {
             boardNumbers: this.generateBoardNumbers(this.rows, this.columns),
             drawnNumbers: [],
-            lastDrawnNumber: 0
+            lastDrawnNumber: 0,
+            showResetModal: false
         }
     }
 
-    
+
     render = () => {
         return (
             <div className="bingoBoard">
@@ -108,7 +115,7 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
                                     })}
                                 </tr>
                             )
-                            
+
                         })}
                     </tbody>
                 </Table>
@@ -118,15 +125,32 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
                         buttonText = "Draw number"
                     ></MyButton>
                     <MyButton
-                        handleClick = {this.resetState}
+                        handleClick = {this.handleOpenResetModal}
                         buttonText = "Reset"
                     ></MyButton>
                 </div>
-               
+
                 <div className={this.state.lastDrawnNumber === 0 ? 'invisible' : ''}>
                     Last drawn number: {this.state.lastDrawnNumber}
                 </div>
-                
+
+                <Modal show={this.state.showResetModal} onHide={this.handleCloseResetModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Check bingo card</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p> Are you sure you want to reset the board </p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" onClick={this.resetState}>
+                            Reset board
+                        </Button>
+                        <Button variant="primary" onClick={this.handleCloseResetModal}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
             </div>
         )
 
