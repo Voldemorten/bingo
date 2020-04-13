@@ -26,7 +26,8 @@ type BingoBoardState = {
 };
 
 type BingoBoardProps = {
-    getDrawnNumbers: (numbers:number[], prevState:any) => void
+    getDrawnNumbers: (numbers:number[]) => void
+    drawnNumbers: number[]
 }
 
 class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
@@ -42,13 +43,32 @@ class BingoBoard extends Component<BingoBoardProps, BingoBoardState> {
         this.columns = 9
         this.amountOfNumbers = this.rows * this.columns
 
-        this.state = this.emptyState()
+        this.state = {
+          boardNumbers: this.generateBoardNumbers(this.rows, this.columns),
+          drawnNumbers: this.props.drawnNumbers,
+          lastDrawnNumber: 0,
+          showResetModal: false
+        }
+
+        //state is preserved
+        if(this.props.drawnNumbers.length > 0) {
+          this.state.boardNumbers.forEach(row => {
+            row.forEach(item => {
+              if(this.state.drawnNumbers.indexOf(item.number) > -1) {
+                item.picked = true;
+              }
+            });
+          });
+        }
+
+
+
     }
 
     //to pass drawn numbers to parent
     // TODO: Fixs bug when resetting. Needs to be double clicked before clearing.
     componentDidUpdate = (prevProps:any, prevState:any) => {
-        this.props.getDrawnNumbers(this.state.drawnNumbers, prevState)
+        this.props.getDrawnNumbers(this.state.drawnNumbers)
     }
 
     generateBoardNumbers = (rows: number, columns: number) => {
